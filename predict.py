@@ -49,7 +49,7 @@ with torch.no_grad():
 print(f"\nФайл: {image_path}")
 
 if classes[class_id] == "other":
-    print(f"Порода: other (не из 5 известных)")
+    print(f"Порода: other (не из {len(classes) - 1} известных)")
     print(f"Уверенность: {confidence:.2%}")
 else:
     print(f"Порода: {classes[class_id]}")

@@ -10,7 +10,7 @@ from PIL import Image
 # 1. Загружаем сохранённую модель
 # ---------------------------------------------------------------------------
 
-checkpoint = torch.load("dog_breeds_v2.pth", map_location="cpu", weights_only=False)
+checkpoint = torch.load("dog_breeds_v3.pth", map_location="cpu", weights_only=False)
 classes = checkpoint["classes"]
 print("classes:", classes)
 

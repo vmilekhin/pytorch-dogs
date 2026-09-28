@@ -7,24 +7,24 @@
 - **0–4:** Beagle, Pug, Samoyed, Shiba Inu, Yorkshire Terrier
 - **5:** `other` — все остальные животные (кошки, другие породы собак)
 
-## Результаты
+## Версии модели
 
-| Модель | Классов | Accuracy | Поведение на чужих классах |
+| Версия | Классов | Accuracy | Особенности |
 |---|---|---|---|
-| v1 | 5 | 99.60% | ❌ Уверенно ошибается (кот → Shiba Inu 99.91%) |
-| **v2** | **6** | **99.47%** | ✅ Отправляет в `other` (кот → other 95–99%) |
+| v1 | 5 | 99.60% | SGD, backbone заморожен, без other |
+| v2 | 6 | 99.47% | + класс `other` (open-set recognition), AdamW |
+| **v3** | **11** | **97.80%** | **10 пород + other, layer4 разморожен, аугментация, scheduler** |
 
-**Confusion matrix v2:**
-```
-          Beagle   Pug   Samoyed  Shiba   York    other
-  Beagle     100     0         0      0      0        0
-     Pug       0   100         0      0      0        0
- Samoyed       0     0        98      0      0        2
- Shiba In      0     0         3     96      0        1
- Yorkshir      0     0         0      0     97        3
-   other       0     0         0      0      0     1183
-```
+### v3 — финальная
 
+- **10 пород собак:** Beagle, Pug, Samoyed, Shiba Inu, Yorkshire Terrier, Boxer, Chihuahua, Havanese, Pomeranian, Newfoundland
+- **+ класс `other`:** кошки и всё остальное
+- **Fine-tuning:** разморожен `layer4` backbone (не только `fc`)
+- **Optimizer:** AdamW с разными learning rates для backbone и `fc`
+- **Scheduler:** CosineAnnealingLR
+- **Аугментация:** RandomResizedCrop, RandomHorizontalFlip, RandomRotation, ColorJitter
+
+Примеры предсказаний:
 ## Установка
 
 ```bash

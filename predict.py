@@ -10,7 +10,7 @@ from PIL import Image
 # 1. Загружаем сохранённую модель
 # ---------------------------------------------------------------------------
 
-checkpoint = torch.load("dog_breeds.pth", map_location="cpu", weights_only=False)
+checkpoint = torch.load("dog_breeds_v2.pth", map_location="cpu", weights_only=False)
 classes = checkpoint["classes"]
 print("classes:", classes)
 
@@ -47,5 +47,10 @@ with torch.no_grad():
     confidence = probabilities[0, class_id].item()
 
 print(f"\nФайл: {image_path}")
-print(f"Порода: {classes[class_id]}")
-print(f"Уверенность: {confidence:.2%}")
+
+if classes[class_id] == "other":
+    print(f"Порода: other (не из 5 известных)")
+    print(f"Уверенность: {confidence:.2%}")
+else:
+    print(f"Порода: {classes[class_id]}")
+    print(f"Уверенность: {confidence:.2%}")

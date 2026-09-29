@@ -3,18 +3,18 @@
 import sys
 import torch
 from torch import nn
-from torchvision.models import resnet18, ResNet18_Weights
+from torchvision.models import resnet50, ResNet50_Weights
 from PIL import Image
 
 # ---------------------------------------------------------------------------
 # 1. Загружаем сохранённую модель
 # ---------------------------------------------------------------------------
 
-checkpoint = torch.load("dog_breeds_v3.pth", map_location="cpu", weights_only=False)
+checkpoint = torch.load("dog_breeds_v4.pth", map_location="cpu", weights_only=False)
 classes = checkpoint["classes"]
 print("classes:", classes)
 
-model = resnet18(weights=None)
+model = resnet50(weights=None)
 model.fc = nn.Linear(model.fc.in_features, len(classes))
 model.load_state_dict(checkpoint["model_state"])
 model.eval()
@@ -23,7 +23,7 @@ model.eval()
 # 2. Transform (тот же, что при обучении)
 # ---------------------------------------------------------------------------
 
-weights = ResNet18_Weights.DEFAULT
+weights = ResNet50_Weights.DEFAULT
 transform = weights.transforms()
 
 # ---------------------------------------------------------------------------

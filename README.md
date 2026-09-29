@@ -7,14 +7,48 @@
 - **0–4:** Beagle, Pug, Samoyed, Shiba Inu, Yorkshire Terrier
 - **5:** `other` — все остальные животные (кошки, другие породы собак)
 
-## Версии модели
+## Эволюция модели
 
-| Версия | Классов | Accuracy | Особенности |
+| Версия | Классов | Backbone | Что нового | Accuracy |
+|---|---|---|---|---|
+| v1 | 5 | ResNet18 | Transfer learning, backbone заморожен | **99.60%** |
+| v2 | 6 | ResNet18 | + класс `other` (open-set recognition) | **99.47%** |
+| v3 | 11 | ResNet18 | + 5 пород, fine-tuning `layer4`, аугментация | **97.80%** |
+| **v4** | **11** | **ResNet50** | **+ weighted loss, mixup** | **99.50%** |
+
+### v4 — финальная версия
+- **ResNet50** вместо ResNet18 (глубже, точнее).
+- **Weighted loss:** Chihuahua ×1.5, Pomeranian ×1.3 — компенсация слабой точности в v3.
+- **Mixup** α=0.2 — регуляризация, защита от переобучения.
+- 20 эпох.
+
+#### Улучшения по сравнению с v3:
+
+| Порода | v3 | v4 | Δ |
 |---|---|---|---|
-| v1 | 5 | 99.60% | SGD, backbone заморожен, без other |
-| v2 | 6 | 99.47% | + класс `other` (open-set recognition), AdamW |
-| **v3** | **11** | **97.80%** | **10 пород + other, layer4 разморожен, аугментация, scheduler** |
+| Chihuahua | 86% | **96%** | **+10%** |
+| Pomeranian | 91% | **99%** | **+8%** |
+| Shiba Inu | 97% | **100%** | +3% |
+| Yorkshire Terrier | 96% | **100%** | +4% |
+| Boxer | 96% | **99%** | +3% |
+| **Общая accuracy** | 97.80% | **99.50%** | **+1.7%** |
 
+## Примеры предсказаний
+
+| Фото | Порода | Уверенность |
+|---|---|---|
+| beagle.jpg | Beagle | 93.35% |
+| chihuahua_1.jpg | Chihuahua | 96.10% |
+| Persian_1.jpg | other | 98.18% |
+
+## Примеры предсказаний
+
+| Фото | Порода | Уверенность |
+|---|---|---|
+| beagle.jpg | Beagle | 98.51% |
+| chihuahua_1.jpg | Chihuahua | 97.32% |
+| boxer_1.jpg | Boxer | 100.00% |
+| Persian_1.jpg | other | 99.52% |
 ### v3 — финальная
 
 - **10 пород собак:** Beagle, Pug, Samoyed, Shiba Inu, Yorkshire Terrier, Boxer, Chihuahua, Havanese, Pomeranian, Newfoundland
